@@ -1,0 +1,116 @@
+#include <iostream>
+using namespace std;
+class Node
+{
+public:
+    int order_id;
+    int value;
+    Node *next;
+    Node(int oid, int val)
+    {
+        order_id = oid;
+        value = val;
+        next = NULL;
+    }
+};
+void show(Node *head)
+{
+    Node *ptr = head;
+    while (ptr != NULL)
+    {
+        cout << "order_id=  " << ptr->order_id << "  Value=  " << ptr->value;
+        ptr = ptr->next;
+        cout << endl;
+    }
+}
+
+void CountOrders_And_TotalOrderVal(Node *head)
+{
+    int count = 0;
+    int total = 0;
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        count++;
+        total = total + temp->value;
+        temp = temp->next;
+    }
+    cout << "Total Orders= " << count << "  Total Order Value = " << total << endl;
+    ;
+}
+
+void search(Node *head, int id)
+{
+    Node *temp = head;
+    while (temp != NULL)
+    {
+        if (temp->order_id == id)
+        {
+            break;
+        }
+        temp = temp->next;
+    }
+    if (temp == NULL)
+    {
+        cout << "No current Order exist with this order_id= " << id << endl;
+    }
+    else
+        cout << "Order Found with order_id = " << id << endl;
+}
+void deleteOrder(Node *&head, Node *&tail, int oid)
+{
+    Node *temp = head;
+    if (temp->order_id == oid)
+    {
+        head = head->next;
+        return;
+    }
+    Node *prev = NULL;
+    while (temp != NULL)
+    {
+        if (temp->order_id == oid)
+        {
+            break;
+        }
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp != NULL)
+    {
+        cout << "Order deleted with order_id= " << temp->order_id << endl;
+        prev->next = temp->next;
+    }
+    else
+    {
+        cout << "No current Order exist with this order_id";
+        return;
+    }
+    if (temp->next == NULL)
+    {
+        tail = prev;
+    }
+}
+int main()
+{
+    Node n1(101, 20);
+    Node n2(102, 30);
+    Node n3(103, 40);
+    n1.next = &n2;
+    n2.next = &n3;
+    Node *head = &n1;
+    Node *tail = &n3;
+
+    cout << "Deleating order" << endl;
+    deleteOrder(head, tail, 103);
+    cout << endl;
+    cout << "Count Orders and Calculate Total Order Value:" << endl;
+    CountOrders_And_TotalOrderVal(head);
+    cout << endl;
+    cout << "Search for Specific Order:" << endl;
+    search(head, 101);
+    cout << endl;
+    cout << "Display Orders:" << endl;
+    show(head);
+    cout << "\nHead_at= " << head->order_id;
+    cout << "\nTail_at= " << tail->order_id;
+}
